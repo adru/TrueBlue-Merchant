@@ -1,0 +1,61 @@
+* {
+  -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+}
+
+body {
+  -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+  -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+  -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+  background: #ffffff;
+  font-family: 'HelveticaNeue-Light', 'HelveticaNeue', 'Roboto', Helvetica, Arial, sans-serif;
+  font-size: 100%;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+}
+.success > div {
+  background-color: #43a047;
+  color: #FFF;
+}
+.error > div{
+  background-color: #d32f2f;
+  color: #FFF;
+}
+
+.verticallyCenter {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* LOGIN */
+.login-icon {
+  width: 50px;
+  height: auto;
+}
+.login-h4 {
+
+}
+
+/* CLIENT AREA */
+.merchant.left,
+.merchant.left + div {
+  float: left;
+  width: 50%;
+}
+.merchant.right,
+.merchant.right + div {
+  float: right;
+  width: 50%;
+}
+
+@media (max-width: 650px) {
+  .merchant.left,
+  .merchant.left + div,
+  .merchant.right,
+  .merchant.right + div {
+    float: none;
+    width: 100%;
+  }
+}
