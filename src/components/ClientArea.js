@@ -261,7 +261,7 @@ class ClientArea extends Component {
             </Toolbar>
           </AppBar>
         }
-        {(actuallyShowThisArea === "" || alwaysShowMerchantPage) && !merchantPage &&
+        {selectedLocation && locationObj[0] && (actuallyShowThisArea === "" || alwaysShowMerchantPage) && !merchantPage &&
           <div className={classes.fullscreen}>
             <div className="verticallyCenter">
               {scanUserQR &&
