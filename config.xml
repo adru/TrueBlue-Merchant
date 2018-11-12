@@ -10,7 +10,7 @@
     <author email="dev@trueblue.guru" href="http://www.trueblue.guru">
       TrueBlue Mobile Software Inc
     </author>
-    <content src="www/index.html" />
+    <content src="index.html" />
     <preference name="permissions" value="none" />
     <preference name="orientation" value="default" />
     <preference name="target-device" value="universal" />
