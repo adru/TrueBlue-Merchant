@@ -24,6 +24,8 @@ import PointsArea from './PointsArea';
 import RewardsArea from './RewardsArea';
 import OrdersArea from './OrdersArea';
 
+let this_;
+
 const styles = theme => ({
   formControl: {
     margin: theme.spacing.unit,
@@ -85,6 +87,8 @@ const initialState = {
 class ClientArea extends Component {
   constructor(props) {
     super(props);
+
+    this_ = this;
     this.state = initialState;
 
     this.handleChange = this.handleChange.bind(this);
@@ -184,22 +188,17 @@ class ClientArea extends Component {
   }
 
   scanQR() {
-    console.log("clicked scanQR");
     /*eslint-disable no-undef*/
     cordova.plugins.diagnostic.requestCameraAuthorization(function(granted) {
       if (granted === true || granted === "GRANTED" || granted === "authorized" || granted === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
-        console.log("true!", granted);
-        this.continueScan();
+        this_.continueScan();
       } else if (granted === false || granted === "DENIED" || granted === cordova.plugins.diagnostic.permissionStatus.DENIED) {
-        console.log("false!", granted);
-        this.setState({ dialogOpen: true });
+        this_.setState({ dialogOpen: true });
       } else {
-        console.log("snackbar error");
-        this.props.handleSnackbar("Error: To complete this action, please allow access to the camera and storage in your settings.", "error");
+        this_.props.handleSnackbar("Error: To complete this action, please allow access to the camera and storage in your settings.", "error");
       }
     }, function(error) {
-      console.log("plugin error");
-      this.props.handleSnackbar("Error: "+error, "error");
+      this_.props.handleSnackbar("Error: "+error, "error");
     });
     /*eslint-enable no-undef*/
   }
@@ -213,14 +212,13 @@ class ClientArea extends Component {
   }
 
   continueScan() {
-    console.log("continue scanning!");
     /*eslint-disable no-undef*/
     cordova.plugins.barcodeScanner.scan(function (result) {
       if (!result.cancelled){
-        this.handleScan(result.text);
+        this_.handleScan(result.text);
       }
     }, function (error) {
-      this.props.handleSnackbar("Error: Scanning failed!", "error");
+      this_.props.handleSnackbar("Error: Scanning failed!", "error");
     });
     /*eslint-enable no-undef*/
   }
