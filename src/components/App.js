@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
 
-import PropTypes from 'prop-types';
 import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
 
@@ -330,7 +328,7 @@ class App extends Component {
             message={snackbarMessage}
             className={snackbarClass}
           />
-          <img src="icon.png" className="login-icon" style={{margin: "30px 0 10px"}} />
+          <img src="icon.png" alt="TrueBlue" className="login-icon" style={{margin: "30px 0 10px"}} />
           <Typography variant="h4" className="login-h4" color="inherit">
             TrueBlue Merchant
           </Typography>
@@ -359,6 +357,7 @@ class App extends Component {
               handleVIPadd={this.handleVIPadd}
               handleVIPdelete={this.handleVIPdelete}
               handleLogout={this.handleLogout}
+              handleSnackbar={this.showSnackbar}
               getQR={this.getQR}
             />
           </div>

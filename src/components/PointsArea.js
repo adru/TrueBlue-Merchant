@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import QRCode from 'qrcode-react';
 
 import PropTypes from 'prop-types';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
@@ -43,7 +42,7 @@ class PointsArea extends Component {
   }
 
   render() {
-    const { classes, data, location } = this.props;
+    const { classes, data } = this.props;
     const { quantity } = this.state;
     const downloadQRBase = "http://trueblue.guru/redirect.php?id="+data.clientData.id+"&e=";
 

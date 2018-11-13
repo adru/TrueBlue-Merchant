@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 
 import PropTypes from 'prop-types';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import AppBar from '@material-ui/core/AppBar';
@@ -184,7 +183,6 @@ class UserArea extends Component {
 
   handleVIPdelete() {
     const { data } = this.props;
-    const { vip_id } = this.state;
 
     this.props.handleVIPdelete(data.userDetails[0].id);
   }

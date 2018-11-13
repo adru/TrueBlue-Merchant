@@ -7,13 +7,17 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import Tooltip from '@material-ui/core/Tooltip';
+import Button from '@material-ui/core/Button';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Dialog from '@material-ui/core/Dialog';
 
 import UserArea from './UserArea';
 import PointsArea from './PointsArea';
@@ -70,13 +74,12 @@ const styles = theme => ({
   }
 });
 
-const ITEM_HEIGHT = 48;
-
 const initialState = {
   locationsOpen: false,
   selectedLocation: "",
   userApiKey: null,
   showArea: "",
+  dialogOpen: false,
 };
 
 class ClientArea extends Component {
@@ -91,6 +94,11 @@ class ClientArea extends Component {
     this.handleLogout = this.handleLogout.bind(this);
     this.handleScan = this.handleScan.bind(this);
     this.showThisArea = this.showThisArea.bind(this);
+    this.gotoSettings = this.gotoSettings.bind(this);
+    this.scanQR = this.scanQR.bind(this);
+    this.handleCloseDialog = this.handleCloseDialog.bind(this);
+    this.handleConfirmDialog = this.handleConfirmDialog.bind(this);
+    this.continueScan = this.continueScan.bind(this);
   }
 
   componentWillMount() {
@@ -165,9 +173,55 @@ class ClientArea extends Component {
     console.error(err);
   }
 
+  gotoSettings() {
+    /*eslint-disable no-undef*/
+    cordova.plugins.diagnostic.switchToSettings(function(){
+      console.log("Successfully switched to Settings app");
+    }, function(error){
+      this.props.handleSnackbar("Error: "+error, "error");
+    });
+    /*eslint-enable no-undef*/
+  }
+
+  scanQR() {
+    /*eslint-disable no-undef*/
+    cordova.plugins.diagnostic.requestCameraAuthorization(function(granted) {
+      if (granted === true || granted === "GRANTED" || granted === "authorized" || granted === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
+        this.continueScan();
+      } else if (granted === false || granted === "DENIED" || granted === cordova.plugins.diagnostic.permissionStatus.DENIED) {
+        this.setState({ dialogOpen: true });
+      } else {
+        this.props.handleSnackbar("Error: To complete this action, please allow access to the camera and storage in your settings.", "error");
+      }
+    }, function(error) {
+      this.props.handleSnackbar("Error: "+error, "error");
+    });
+    /*eslint-enable no-undef*/
+  }
+
+  handleCloseDialog() {
+    this.setState({ dialogOpen: false });
+  }
+
+  handleConfirmDialog() {
+    this.gotoSettings();
+  }
+
+  continueScan() {
+    /*eslint-disable no-undef*/
+    cordova.plugins.barcodeScanner.scan(function (result) {
+      if (!result.cancelled){
+        this.handleScan(result.text);
+      }
+    }, function (error) {
+      this.props.handleSnackbar("Error: Scanning failed!", "error");
+    });
+    /*eslint-enable no-undef*/
+  }
+
   render() {
     const { classes, data, getQR } = this.props;
-    const { locationsOpen, selectedLocation, showArea } = this.state;
+    const { locationsOpen, dialogOpen, selectedLocation, showArea } = this.state;
     const locationObj = (selectedLocation !== "") ? data.clientData.locations.filter(function(location) { return location.id === selectedLocation; }) : null;
     const scanUserQR = (data.clientData && data.clientData.client_mode === "merchant");
     const seeOrders = (locationObj && locationObj[0] && locationObj[0].cart_email);
@@ -179,6 +233,24 @@ class ClientArea extends Component {
 
     return (
       <div>
+        <Dialog
+          maxWidth="xs"
+          aria-labelledby="confirmation-dialog-title"
+          open={dialogOpen}
+        >
+          <DialogTitle id="confirmation-dialog-title">Permissions Error</DialogTitle>
+          <DialogContent>
+            To complete this action, please allow access to the camera and storage in your settings.
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleCloseDialog} color="primary">
+              Nevermind
+            </Button>
+            <Button onClick={this.handleConfirmDialog} color="primary">
+              Go to Settings
+            </Button>
+          </DialogActions>
+        </Dialog>
         {data.clientData.client_css && <style>{data.clientData.client_css}</style>}
         {(!selectedLocation || locationObj.length === 0) && data.clientData.locations && data.clientData.locations.length > 1 &&
           <AppBar position="static" color="primary" className="appBar">
@@ -220,7 +292,7 @@ class ClientArea extends Component {
               </Typography>
               {scanUserQR &&
                 <Tooltip title="Scan a User QR Code">
-                  <IconButton className={(actuallyShowThisArea === "qrScanner" || actuallyShowThisArea === "userArea") ? classes.selectedButton : ""} color="inherit" aria-label="Scan a User QR Code" onClick={(e) => this.showThisArea("qrScanner")}>
+                  <IconButton className={(actuallyShowThisArea === "qrScanner" || actuallyShowThisArea === "userArea") ? classes.selectedButton : ""} color="inherit" aria-label="Scan a User QR Code" onClick={this.scanQR}>
                     <i className="fas fa-user"></i>
                   </IconButton>
                 </Tooltip>
@@ -268,7 +340,7 @@ class ClientArea extends Component {
                 <ButtonBase
                   focusRipple
                   focusVisibleClassName={classes.focusVisible}
-                  onClick={(e) => this.showThisArea("qrScanner")}
+                  onClick={this.scanQR}
                   className={classes.buttonBase}
                 >
                   <div className={classes.largeIcon}><i className="fas fa-user fa-lg"></i></div>
@@ -324,7 +396,7 @@ class ClientArea extends Component {
             {data.merchantPageData[0].css &&
               <style>{data.merchantPageData[0].css}</style>
             }
-            <div className={classes.page + " " + "page"} dangerouslySetInnerHTML={{__html: data.merchantPageData[0].content}}></div>
+            <div className={classes.page + " page"} dangerouslySetInnerHTML={{__html: data.merchantPageData[0].content}}></div>
           </div>
         }
         {actuallyShowThisArea === "qrScanner" && locationObj &&
