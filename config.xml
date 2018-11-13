@@ -155,4 +155,5 @@
     </plugin>
     <engine name="ios" spec="latest" />
     <engine name="android" spec="~7.0.0" />
+    <preference name="phonegap-version" value="cli-7.1.0" />
 </widget>

@@ -184,16 +184,21 @@ class ClientArea extends Component {
   }
 
   scanQR() {
+    console.log("clicked scanQR");
     /*eslint-disable no-undef*/
     cordova.plugins.diagnostic.requestCameraAuthorization(function(granted) {
       if (granted === true || granted === "GRANTED" || granted === "authorized" || granted === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
+        console.log("true!", granted);
         this.continueScan();
       } else if (granted === false || granted === "DENIED" || granted === cordova.plugins.diagnostic.permissionStatus.DENIED) {
+        console.log("false!", granted);
         this.setState({ dialogOpen: true });
       } else {
+        console.log("snackbar error");
         this.props.handleSnackbar("Error: To complete this action, please allow access to the camera and storage in your settings.", "error");
       }
     }, function(error) {
+      console.log("plugin error");
       this.props.handleSnackbar("Error: "+error, "error");
     });
     /*eslint-enable no-undef*/
@@ -208,6 +213,7 @@ class ClientArea extends Component {
   }
 
   continueScan() {
+    console.log("continue scanning!");
     /*eslint-disable no-undef*/
     cordova.plugins.barcodeScanner.scan(function (result) {
       if (!result.cancelled){
