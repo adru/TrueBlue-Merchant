@@ -50,6 +50,25 @@ class LoginForm extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    this.testConnection();
+  }
+
+  testConnection() {
+    console.log("testConnection");
+    fetch("http://live.trueblue.guru/application/v1.5/admin/client", {
+      method: "get",
+      headers: {
+        'Authorization': "static_test",
+        'Tbapikey': "static_test"
+      }
+    })
+    .then(response => response.json())
+    .then(function(data) {
+      console.log("testConnection", data);
+    });
+  }
+
   handleChange(event) {
     this.setState({[event.target.name]: event.target.value});
   }

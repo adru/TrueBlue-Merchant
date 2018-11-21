@@ -76,26 +76,9 @@ class App extends Component {
         this_.apiLogin({ api_key: this_.state.apiKey });
       });
     }
-
-    this.testConnection();
   }
 
   componentDidUpdate() {
-  }
-
-  testConnection() {
-    console.log("testConnection");
-    fetch(apiBase+"/client", {
-      method: "get",
-      headers: {
-        'Authorization': "static_test",
-        'Tbapikey': "static_test"
-      }
-    })
-    .then(response => response.json())
-    .then(function(data) {
-      console.log(data);
-    });
   }
 
   adminLogin(data) {
