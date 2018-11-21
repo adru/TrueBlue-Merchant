@@ -24,7 +24,7 @@
     -->
     <title>React App</title>
   </head>
-  <body>
+  <body onload="onLoad()">
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
@@ -40,5 +40,22 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
     <script type="text/javascript" src="cordova.js"></script>
+
+    <!-- Inline JS -->
+    <script type="text/javascript">
+      function onLoad() {
+        console.log("index onload");
+        if (window.cordova) {
+          console.log("cordova!!");
+          // document.addEventListener("deviceready", onDeviceReady, false);
+        } else {
+          console.log("no cordova!!");
+          // setTimeout(function() {
+          //   console.log("dev deviceready");
+          //   onDeviceReady();
+          // }, 1000);
+        }
+      }
+    </script>
   </body>
 </html>
