@@ -10,6 +10,7 @@ const startApp = function() {
 };
 
 window.onload = function() {
+  console.log("window onload");
   if (window.cordova) {
     console.log("cordova!");
     document.addEventListener('deviceready', startApp, false);
@@ -25,3 +26,6 @@ window.onload = function() {
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.register();
+
+console.log("index.js");
+alert("index.js");
