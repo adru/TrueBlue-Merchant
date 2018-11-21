@@ -1,31 +1,31 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './css/index.css';
-import App from './components/App';
-import * as serviceWorker from './serviceWorker';
-
-const startApp = function() {
-  ReactDOM.render(<App />, document.getElementById('root'));
-  // serviceWorker.register();
-};
-
-window.onload = function() {
-  console.log("window onload");
-  if (window.cordova) {
-    console.log("cordova!");
-    document.addEventListener('deviceready', startApp, false);
-  } else {
-    console.log("no cordova...");
-    setTimeout(function() {
-      startApp();
-    }, 1000);
-  }
-}
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.register();
-
+// import React from 'react';
+// import ReactDOM from 'react-dom';
+// import './css/index.css';
+// import App from './components/App';
+// import * as serviceWorker from './serviceWorker';
+//
+// const startApp = function() {
+//   ReactDOM.render(<App />, document.getElementById('root'));
+//   // serviceWorker.register();
+// };
+//
+// window.onload = function() {
+//   console.log("window onload");
+//   if (window.cordova) {
+//     console.log("cordova!");
+//     document.addEventListener('deviceready', startApp, false);
+//   } else {
+//     console.log("no cordova...");
+//     setTimeout(function() {
+//       startApp();
+//     }, 1000);
+//   }
+// }
+//
+// // If you want your app to work offline and load faster, you can change
+// // unregister() to register() below. Note this comes with some pitfalls.
+// // Learn more about service workers: http://bit.ly/CRA-PWA
+// serviceWorker.register();
+//
 console.log("index.js");
 alert("index.js");
