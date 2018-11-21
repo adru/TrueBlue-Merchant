@@ -10,10 +10,16 @@ const startApp = function() {
   // serviceWorker.register();
 };
 
-if(window.cordova) {
-  document.addEventListener('deviceready', startApp, false);
-} else {
-  startApp();
+window.onload = function() {
+  if (window.cordova) {
+    console.log("cordova!");
+    document.addEventListener('deviceready', startApp, false);
+  } else {
+    console.log("no cordova...");
+    setTimeout(function() {
+      startApp();
+    }, 1000);
+  }
 }
 
 // If you want your app to work offline and load faster, you can change
