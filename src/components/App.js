@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import 'whatwg-fetch';
 
 import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
