@@ -4,8 +4,8 @@ import './css/index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 
-alert("index.js");
-console.log("index.js");
+// alert("index.js");
+// console.log("index.js");
 
 const startApp = function() {
   ReactDOM.render(<App />, document.getElementById('root'));
