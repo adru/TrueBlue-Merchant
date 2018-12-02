@@ -128,14 +128,13 @@ class App extends Component {
   }
 
   getClient() {
-    let headers = new Headers();
-    headers.append('Authorization', btoa(this.state.apiKey));
-    headers.append('Tbapikey', btoa(this.state.apiKey));
-
-    console.log("getClient", apiBase, this.state.apiKey, headers);
+    console.log("getClient", apiBase, this.state.apiKey);
     fetch(apiBase+"/client", {
       method: "get",
-      headers: headers
+      headers: {
+        'Authorization': this.state.apiKey,
+        'Tbapikey': this.state.apiKey
+      }
     })
     .then(response => response.json())
     .then(function(data) {
