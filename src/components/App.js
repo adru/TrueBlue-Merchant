@@ -128,13 +128,7 @@ class App extends Component {
 
   getClient() {
     console.log("getClient", apiBase, this.state.apiKey);
-    fetch(apiBase+"/client", {
-      method: "get",
-      // headers: {
-      //   'Authorization': this.state.apiKey,
-      //   'Tbapikey': this.state.apiKey
-      // }
-    })
+    fetch(apiBase+"/client")
     // .then(response => response.json())
     .then(function(response) {
       console.log(response);
