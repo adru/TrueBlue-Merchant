@@ -125,6 +125,7 @@ class App extends Component {
   }
 
   getClient() {
+    console.log("getClient", apiBase, this.state.apiKey);
     fetch(apiBase+"/client", {
       method: "get",
       headers: {
@@ -132,7 +133,10 @@ class App extends Component {
         'Tbapikey': this.state.apiKey
       }
     })
-    .then(response => response.json())
+    // .then(response => response.json())
+    .then(function(response) {
+      console.log(response);
+    })
     .then(function(data) {
       if (!data.error) {
         this_.setState({ clientData: data.client[0] });
