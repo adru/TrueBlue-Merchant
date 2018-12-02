@@ -1,5 +1,6 @@
-import React, {Component} from 'react';
 import 'core-js';
+
+import React, {Component} from 'react';
 import 'whatwg-fetch';
 
 import Snackbar from '@material-ui/core/Snackbar';
@@ -129,10 +130,10 @@ class App extends Component {
     console.log("getClient", apiBase, this.state.apiKey);
     fetch(apiBase+"/client", {
       method: "get",
-      headers: {
-        'Authorization': this.state.apiKey,
-        'Tbapikey': this.state.apiKey
-      }
+      // headers: {
+      //   'Authorization': this.state.apiKey,
+      //   'Tbapikey': this.state.apiKey
+      // }
     })
     // .then(response => response.json())
     .then(function(response) {
