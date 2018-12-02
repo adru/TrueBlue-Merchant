@@ -1,4 +1,5 @@
 import 'core-js';
+import "@babel/polyfill";
 
 import React, {Component} from 'react';
 import 'whatwg-fetch';
@@ -131,16 +132,14 @@ class App extends Component {
     headers.append('Authorization', btoa(this.state.apiKey));
     headers.append('Tbapikey', btoa(this.state.apiKey));
 
-    console.log("getClient", apiBase, this.state.apiKey);
+    console.log("getClient", apiBase, this.state.apiKey, headers);
     fetch(apiBase+"/client", {
       method: "get",
       headers: headers
     })
-    // .then(response => response.json())
-    .then(function(response) {
-      console.log(response);
-    })
+    .then(response => response.json())
     .then(function(data) {
+      console.log("getClient", data);
       if (!data.error) {
         this_.setState({ clientData: data.client[0] });
         this_.getRewards();
