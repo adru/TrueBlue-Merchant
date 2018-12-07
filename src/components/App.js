@@ -128,19 +128,19 @@ class App extends Component {
   }
 
   getClient() {
+    let tb_headers = new Headers();
+    tb_headers.append('Authorization', this.state.apiKey);
+    tb_headers.append('Tbapikey', this.state.apiKey);
+
     console.log("getClient", apiBase, this.state.apiKey);
     fetch(apiBase+"/client", {
       method: "get",
-      headers: {
-        'Authorization': this.state.apiKey,
-        'Tbapikey': this.state.apiKey,
-        'credentials': 'same-origin',
-      }
+      headers: tb_headers
     })
-    // .then(response => response.json())
-    .then(function(response) {
-      console.log(response);
-    })
+    .then(response => response.json())
+    // .then(function(response) {
+    //   console.log(response);
+    // })
     .then(function(data) {
       console.log("getClient", data);
       if (!data.error) {
