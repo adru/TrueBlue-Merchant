@@ -15,7 +15,7 @@ import '../css/all.min.css';
 
 let this_;
 // const apiBase = "http://localhost.trueblue.guru/api/v1.5/admin";
-const apiBase = "http://live.trueblue.guru/application/v1.5/admin-test";
+const apiBase = "http://live.trueblue.guru/application/v1.5/admin";
 
 const initialState = {
   apiKey: null,
@@ -128,18 +128,15 @@ class App extends Component {
   }
 
   getClient() {
-    let tb_headers = new Headers();
-    tb_headers.append('Authorization', this.state.apiKey);
-    tb_headers.append('Tbapikey', this.state.apiKey);
-
-    console.log("getClient", apiBase, this.state.apiKey, tb_headers);
     fetch(apiBase+"/client", {
       method: "get",
-      headers: tb_headers
+      headers: {
+        'Authorization': this.state.apiKey,
+        'Tbapikey': this.state.apiKey
+      }
     })
     .then(response => response.json())
     .then(function(data) {
-      console.log("getClient", data);
       if (!data.error) {
         this_.setState({ clientData: data.client[0] });
         this_.getRewards();
