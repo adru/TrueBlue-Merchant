@@ -15,7 +15,7 @@ import '../css/all.min.css';
 
 let this_;
 // const apiBase = "http://localhost.trueblue.guru/api/v1.5/admin";
-const apiBase = "http://live.trueblue.guru/application/v1.5/admin";
+const apiBase = "http://live.trueblue.guru/application/v1.5/admin-test";
 
 const initialState = {
   apiKey: null,
