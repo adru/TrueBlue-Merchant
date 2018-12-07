@@ -139,15 +139,15 @@ class App extends Component {
     // .then(response => response.json())
     .then(function(response) {
       console.log(response);
+    })
+    .then(function(data) {
+      console.log("getClient", data);
+      if (!data.error) {
+        this_.setState({ clientData: data.client[0] });
+        this_.getRewards();
+        this_.getMerchantPage();
+      }
     });
-    // .then(function(data) {
-    //   console.log("getClient", data);
-    //   if (!data.error) {
-    //     this_.setState({ clientData: data.client[0] });
-    //     this_.getRewards();
-    //     this_.getMerchantPage();
-    //   }
-    // });
   }
 
   getUser(userApiKey) {
