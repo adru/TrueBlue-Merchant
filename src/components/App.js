@@ -132,15 +132,12 @@ class App extends Component {
     tb_headers.append('Authorization', this.state.apiKey);
     tb_headers.append('Tbapikey', this.state.apiKey);
 
-    console.log("getClient", apiBase, this.state.apiKey);
+    console.log("getClient", apiBase, this.state.apiKey, tb_headers);
     fetch(apiBase+"/client", {
       method: "get",
       headers: tb_headers
     })
     .then(response => response.json())
-    // .then(function(response) {
-    //   console.log(response);
-    // })
     .then(function(data) {
       console.log("getClient", data);
       if (!data.error) {
