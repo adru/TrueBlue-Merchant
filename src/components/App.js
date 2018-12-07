@@ -133,7 +133,8 @@ class App extends Component {
       method: "get",
       headers: {
         'Authorization': this.state.apiKey,
-        'Tbapikey': this.state.apiKey
+        'Tbapikey': this.state.apiKey,
+        'credentials': 'same-origin',
       }
     })
     // .then(response => response.json())
