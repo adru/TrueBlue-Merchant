@@ -50,21 +50,30 @@ class RewardsArea extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      location_token: this.props.location.location_token
-    }, function() {
-      if (this.props.data.rewardData && this.props.data.rewardData.length === 1) {
-        this.setState({
-          reward_id: this.props.data.rewardData[0].id,
-          reward_name: this.props.data.rewardData[0].reward_name
-        }, function() {
-          this.props.getQR(this.state);
-        });
-      }
+    let newState = {};
+    newState.location_token = this.props.location.location_token;
+    if (this.props.data.rewardData && this.props.data.rewardData.length === 1) {
+      newState.reward_id = this.props.data.rewardData[0].id;
+      newState.reward_name = this.props.data.rewardData[0].reward_name;
+    }
+
+    this.setState(newState, function() {
+      this.props.getQR(this.state);
     });
   }
 
   componentDidUpdate() {
+    if (this.props.location.location_token !== this.state.location_token) {
+      this.setState({
+        location_token: this.props.location.location_token
+      }, function() {
+        this.props.getQR(this.state);
+      });
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.state.location_token !== nextState.location_token || this.props.data.displayQR !== nextProps.data.displayQR || this.props.location.location_token === this.state.location_token;
   }
 
   handleChange(event, name) {

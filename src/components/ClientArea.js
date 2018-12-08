@@ -82,6 +82,7 @@ const initialState = {
   userApiKey: null,
   showArea: "",
   dialogOpen: false,
+  resetQROpen: false,
 };
 
 class ClientArea extends Component {
@@ -103,6 +104,9 @@ class ClientArea extends Component {
     this.handleCloseDialog = this.handleCloseDialog.bind(this);
     this.handleConfirmDialog = this.handleConfirmDialog.bind(this);
     this.continueScan = this.continueScan.bind(this);
+    this.openResetQR = this.openResetQR.bind(this);
+    this.closeResetQR = this.closeResetQR.bind(this);
+    this.confirmResetQR = this.confirmResetQR.bind(this);
   }
 
   componentWillMount() {
@@ -223,9 +227,29 @@ class ClientArea extends Component {
     /*eslint-enable no-undef*/
   }
 
+  openResetQR() {
+    this.setState({ resetQROpen: true });
+  }
+  closeResetQR() {
+    this.setState({ resetQROpen: false });
+  }
+  confirmResetQR() {
+    const { data } = this.props;
+    const { selectedLocation } = this.state;
+    const locationObj = (selectedLocation !== "") ? data.clientData.locations.filter(function(location) { return location.id === selectedLocation; }) : null;
+
+    if (selectedLocation && locationObj[0]) {
+      this.props.handleResetQR(locationObj[0].id);
+    } else {
+      this.props.handleSnackbar("Error: A location is required.", "error");
+    }
+
+    this.closeResetQR();
+  }
+
   render() {
     const { classes, data, getQR } = this.props;
-    const { locationsOpen, dialogOpen, selectedLocation, showArea } = this.state;
+    const { locationsOpen, dialogOpen, resetQROpen, selectedLocation, showArea } = this.state;
     const locationObj = (selectedLocation !== "") ? data.clientData.locations.filter(function(location) { return location.id === selectedLocation; }) : null;
     const scanUserQR = (data.clientData && data.clientData.client_mode === "merchant");
     const seeOrders = (locationObj && locationObj[0] && locationObj[0].cart_email);
@@ -252,6 +276,24 @@ class ClientArea extends Component {
             </Button>
             <Button onClick={this.handleConfirmDialog} color="primary">
               Go to Settings
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog
+          maxWidth="xs"
+          aria-labelledby="reset-qr-dialog-title"
+          open={resetQROpen}
+        >
+          <DialogTitle id="confirmation-dialog-title">Reset QR Codes</DialogTitle>
+          <DialogContent>
+            Are you sure you want to reset all of your QR codes?
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.closeResetQR} color="primary">
+              Nevermind
+            </Button>
+            <Button onClick={this.confirmResetQR} color="primary">
+              Yes, Reset them
             </Button>
           </DialogActions>
         </Dialog>
@@ -298,6 +340,13 @@ class ClientArea extends Component {
                 <Tooltip title="Scan a User QR Code">
                   <IconButton className={(actuallyShowThisArea === "qrScanner" || actuallyShowThisArea === "userArea") ? classes.selectedButton : ""} color="inherit" aria-label="Scan a User QR Code" onClick={this.scanQR}>
                     <i className="fas fa-user"></i>
+                  </IconButton>
+                </Tooltip>
+              }
+              {!scanUserQR &&
+                <Tooltip title="Reset QR Codes">
+                  <IconButton color="inherit" aria-label="Show Point QR Code" onClick={(e) => this.openResetQR()}>
+                    <i className="fas fa-sync"></i>
                   </IconButton>
                 </Tooltip>
               }

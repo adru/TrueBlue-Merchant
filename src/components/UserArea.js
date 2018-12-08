@@ -192,7 +192,7 @@ class UserArea extends Component {
     const { addAmount, reward_id, vip_id } = this.state;
     const timestamp = new Date(data.userDetails[0].created*1000);
     const created = new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'short', day: 'numeric'}).format(timestamp);
-    console.log(clientData, clientData.locations);
+    // console.log(clientData, clientData.locations);
     return (
       <div>
         <AppBar position="static" color="default">

@@ -28,17 +28,37 @@ class PointsArea extends Component {
       location_token: null,
       unique: false
     };
+
+    this.updateStateGetQR = this.updateStateGetQR.bind(this);
   }
 
   componentDidMount() {
+    this.updateStateGetQR();
+  }
+
+  componentDidUpdate() {
+    // console.log("did update");
+    if (this.props.location.location_token !== this.state.location_token) {
+      this.updateStateGetQR();
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // console.log("nextProps", nextProps, this.props);
+    // console.log("nextState", nextState, this.state);
+    // console.log("state.location token same?", this.state.location_token === nextState.location_token);
+    // console.log("displayQR the same?", this.props.data.displayQR === nextProps.data.displayQR);
+    // console.log("props.location_token the same?", this.props.location.location_token === nextProps.location.location_token);
+    // console.log("props.location_token the same as state.location_token?", this.props.location.location_token === this.state.location_token);
+    return this.state.location_token !== nextState.location_token || this.props.data.displayQR !== nextProps.data.displayQR || this.props.location.location_token === this.state.location_token;
+  }
+
+  updateStateGetQR() {
     this.setState({
       location_token: this.props.location.location_token
     }, function() {
       this.props.getQR(this.state);
     });
-  }
-
-  componentDidUpdate() {
   }
 
   render() {

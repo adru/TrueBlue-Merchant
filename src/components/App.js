@@ -50,6 +50,7 @@ class App extends Component {
     this.handleManualClaim = this.handleManualClaim.bind(this);
     this.handleVIPadd = this.handleVIPadd.bind(this);
     this.handleVIPdelete = this.handleVIPdelete.bind(this);
+    this.handleResetQR = this.handleResetQR.bind(this);
   }
 
   showSnackbar(message, style) {
@@ -193,6 +194,30 @@ class App extends Component {
     });
   }
 
+  handleResetQR(location_id) {
+    let new_code = this.randomString(10);
+    fetch(apiBase+"/locations/"+location_id, {
+      method: "put",
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+        'Authorization': this.state.apiKey,
+        'Tbapikey': this.state.apiKey
+      },
+      body: this.xwwwfurlenc({
+        token: new_code
+      })
+    })
+    .then(response => response.json())
+    .then(function(data) {
+      if (!data.error) {
+        this_.showSnackbar("QR Codes have been reset.", "success");
+        this_.getClient();
+      } else {
+        this_.showSnackbar("Error: "+data.message, "error");
+      }
+    });
+  }
+
   getQR(data) {
     if (data === "clear") {
       this_.setState({ displayQR: null });
@@ -317,6 +342,17 @@ class App extends Component {
     return urljson;
   }
 
+  randomString(char) {
+    let text = "";
+    let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for (var i=0; i < char; i++ ) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+
+    return text;
+  }
+
   render() {
     const { snackbarOpen, snackbarMessage, snackbarClass } = this.state;
 
@@ -363,6 +399,7 @@ class App extends Component {
               handleVIPdelete={this.handleVIPdelete}
               handleLogout={this.handleLogout}
               handleSnackbar={this.showSnackbar}
+              handleResetQR={this.handleResetQR}
               getQR={this.getQR}
             />
           </div>
