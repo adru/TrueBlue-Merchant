@@ -154,11 +154,6 @@ class ClientArea extends Component {
 
   showThisArea(area) {
     this.props.getQR("clear");
-    // if (area === "qrScanner") {
-    //   this.setState({ userApiKey: "bee7c292dfbd275df48576c14464974e" }, function() {
-    //     this.props.handleGetUser(this.state.userApiKey)
-    //   });
-    // } else
     if (this.state.showArea !== area) {
       this.setState({ showArea: area });
     } else {
@@ -192,6 +187,10 @@ class ClientArea extends Component {
   }
 
   scanQR() {
+    //   this.setState({ userApiKey: "e0cb2b75f0dffda6d6f67c8bb1ae644b" }, function() {
+    //     this.props.handleGetUser(this.state.userApiKey)
+    //   });
+
     /*eslint-disable no-undef*/
     cordova.plugins.diagnostic.requestCameraAuthorization(function(granted) {
       if (granted === true || granted === "GRANTED" || granted === "authorized" || granted === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
@@ -333,6 +332,13 @@ class ClientArea extends Component {
         {selectedLocation && locationObj[0] &&
           <AppBar position="static" color="primary" className="appBar">
             <Toolbar>
+              {data.clientData.locations && data.clientData.locations.length > 1 &&
+                <Tooltip title="Select a new location">
+                  <IconButton color="inherit" aria-label="Select a new location" onClick={this.clearLocation}>
+                    <i className="fas fa-building"></i>
+                  </IconButton>
+                </Tooltip>
+              }
               <Typography variant="h5" color="inherit" className={classes.leftBar}>
                 <span dangerouslySetInnerHTML={{__html: locationObj[0].location_name}} />
               </Typography>
@@ -371,13 +377,6 @@ class ClientArea extends Component {
                   </IconButton>
                 </Tooltip>
               }
-              {data.clientData.locations && data.clientData.locations.length > 1 &&
-                <Tooltip title="Select a new location">
-                  <IconButton color="inherit" aria-label="Select a new location" onClick={this.clearLocation}>
-                    <i className="fas fa-building"></i>
-                  </IconButton>
-                </Tooltip>
-              }
               <Tooltip title="Logout">
                 <IconButton color="inherit" aria-label="Logout" onClick={this.handleLogout}>
                   <i className="fas fa-sign-out"></i>
@@ -398,7 +397,7 @@ class ClientArea extends Component {
                 >
                   <div className={classes.largeIcon}><i className="fas fa-user fa-lg"></i></div>
                   <Typography variant="h6" color="inherit">
-                    Show User QR Code
+                    Scan User QR Code
                   </Typography>
                 </ButtonBase>
               }

@@ -7,13 +7,13 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
+import NumPad from 'react-numpad-material';
 
 const styles = theme => ({
   vip: {
@@ -90,6 +90,7 @@ class UserArea extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleNumPadChange = this.handleNumPadChange.bind(this);
     this.add = this.add.bind(this);
     this.subtract = this.subtract.bind(this);
     this.handleManualScan = this.handleManualScan.bind(this);
@@ -115,6 +116,12 @@ class UserArea extends Component {
       [name]: event.target.value,
     });
   };
+
+  handleNumPadChange(value, name) {
+    this.setState({
+      [name]: parseInt(value),
+    });
+  }
 
   add() {
     this.setState({ addAmount: this.state.addAmount+1 }, function() {
@@ -243,20 +250,22 @@ class UserArea extends Component {
                   {data.userDetails[0].current_points}
                 </Typography>
                 <div className={classes.controls}>
-                  <IconButton onClick={this.subtract}>
-                    <i className="fas fa-minus"></i>
-                  </IconButton>
-                  <TextField
-                    id="standard-number"
+                  <NumPad.Popover
+                    onChange={(value) => this.handleNumPadChange(value, 'addAmount')}
+                    position="center"
+                    qtyIncrement={1}
+                    max={999}
+                    min={0}
                     value={addAmount}
-                    onChange={(e) => this.handleChange(e, 'addAmount')}
-                    type="number"
-                    className={classes.textField}
-                    margin="normal"
-                  />
-                  <IconButton onClick={this.add}>
-                    <i className="fas fa-plus"></i>
-                  </IconButton>
+                    >
+                    <TextField
+                      id="standard-number"
+                      value={addAmount}
+                      type="number"
+                      className={classes.textField}
+                      margin="normal"
+                    />
+                  </NumPad.Popover>
                 </div>
                 <Button variant="contained" disabled={!addAmount} color="primary" className={classes.button} onClick={this.handleManualScan}>
                   Add Points

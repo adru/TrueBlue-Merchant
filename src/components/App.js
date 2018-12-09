@@ -158,6 +158,8 @@ class App extends Component {
     .then(function(data) {
       if (!data.error) {
         this_.setState({ userData: data });
+      } else {
+        this_.showSnackbar("Error: "+data.message, "error");
       }
     });
   }

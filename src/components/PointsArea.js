@@ -4,7 +4,9 @@ import QRCode from 'qrcode-react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
+import NumPad from 'react-numpad-material';
 
 const styles = theme => ({
   qrWrapper: {
@@ -17,7 +19,14 @@ const styles = theme => ({
       minWidth: 240,
       maxWidth: 400
     }
-  }
+  },
+  textField: {
+    marginTop: 0,
+    '& input': {
+      textAlign: 'center',
+      fontSize: 36
+    }
+  },
 });
 
 class PointsArea extends Component {
@@ -30,6 +39,7 @@ class PointsArea extends Component {
     };
 
     this.updateStateGetQR = this.updateStateGetQR.bind(this);
+    this.handleNumPadChange = this.handleNumPadChange.bind(this);
   }
 
   componentDidMount() {
@@ -50,7 +60,18 @@ class PointsArea extends Component {
     // console.log("displayQR the same?", this.props.data.displayQR === nextProps.data.displayQR);
     // console.log("props.location_token the same?", this.props.location.location_token === nextProps.location.location_token);
     // console.log("props.location_token the same as state.location_token?", this.props.location.location_token === this.state.location_token);
+    // console.log(this.state.quantity, nextState.quantity);
     return this.state.location_token !== nextState.location_token || this.props.data.displayQR !== nextProps.data.displayQR || this.props.location.location_token === this.state.location_token;
+  }
+
+  handleNumPadChange(value, name) {
+    if (this.state[name] !== parseInt(value)) {
+      this.setState({
+        [name]: parseInt(value),
+      }, function() {
+        this.props.getQR(this.state);
+      });
+    }
   }
 
   updateStateGetQR() {
@@ -70,9 +91,31 @@ class PointsArea extends Component {
       return (
         <div>
           <Paper title={downloadQRBase+data.displayQR.code} className={classes.qrWrapper}>
-            <Typography color="textSecondary" variant="h6">
-              {quantity} Point(s)
-            </Typography>
+            {data.clientData.merchant_numpad === 1 &&
+              <div>
+              <NumPad.Popover
+                onChange={(value) => this.handleNumPadChange(value, 'quantity')}
+                position="center"
+                qtyIncrement={1}
+                max={999}
+                min={1}
+                value={quantity}
+                >
+                <TextField
+                  id="standard-number"
+                  value={quantity}
+                  type="number"
+                  className={classes.textField}
+                  margin="normal"
+                />
+              </NumPad.Popover>
+              </div>
+            }
+            {data.clientData.merchant_numpad !== 1 &&
+              <Typography color="textSecondary" variant="h6">
+                {quantity} Point(s)
+              </Typography>
+            }
             <QRCode
               value={downloadQRBase+data.displayQR.code}
               size={400}
