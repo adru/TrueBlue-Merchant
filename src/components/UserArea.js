@@ -339,7 +339,7 @@ class UserArea extends Component {
                       ))}
                     </Select>
                   </FormControl>
-                  <Button variant="contained" disabled={data.vip && data.vip[0] && data.vip[0].id == vip_id} color="primary" className={classes.button} onClick={this.handleVIP}>
+                  <Button variant="contained" disabled={data.vip && data.vip[0] && parseInt(data.vip[0].id,0) === parseInt(vip_id,0)} color="primary" className={classes.button} onClick={this.handleVIP}>
                     Update VIP Status
                   </Button>
                 </CardContent>

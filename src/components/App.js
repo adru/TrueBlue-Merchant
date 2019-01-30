@@ -22,6 +22,7 @@ const initialState = {
   adminData: null,
   clientData: null,
   userData: null,
+  orderData: null,
   snackbarOpen: false,
   snackbarMessage: "",
   snackbarClass: "",
@@ -43,6 +44,7 @@ class App extends Component {
     this.apiLogin = this.apiLogin.bind(this);
     this.getClient = this.getClient.bind(this);
     this.getUser = this.getUser.bind(this);
+    this.getOrders = this.getOrders.bind(this);
     this.getRewards = this.getRewards.bind(this);
     this.getMerchantPage = this.getMerchantPage.bind(this);
     this.getQR = this.getQR.bind(this);
@@ -51,6 +53,9 @@ class App extends Component {
     this.handleVIPadd = this.handleVIPadd.bind(this);
     this.handleVIPdelete = this.handleVIPdelete.bind(this);
     this.handleResetQR = this.handleResetQR.bind(this);
+    this.getOrderReceipt = this.getOrderReceipt.bind(this);
+    this.handleOrderStatus = this.handleOrderStatus.bind(this);
+    this.handleOrderPaid = this.handleOrderPaid.bind(this);
   }
 
   showSnackbar(message, style) {
@@ -327,6 +332,98 @@ class App extends Component {
     });
   }
 
+  getOrders(location_id) {
+    fetch(apiBase+"/orders/location/"+location_id, {
+      method: "get",
+      headers: {
+        'Authorization': this.state.apiKey,
+        'Tbapikey': this.state.apiKey
+      }
+    })
+    .then(response => response.json())
+    .then(function(data) {
+      if (!data.error) {
+        this_.setState({ orderData: data.orders });
+      } else {
+        this_.showSnackbar("Error: "+data.message, "error");
+      }
+    });
+  }
+
+  getOrderReceipt(order_id) {
+    fetch(apiBase+"/orders/receipt/"+order_id, {
+      method: "get",
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+        'Authorization': this.state.apiKey,
+        'Tbapikey': this.state.apiKey
+      }
+    })
+    .then(response => response.json())
+    .then(function(data) {
+      if (!data.error) {
+        this_.setState({
+          orderData: (this_.state.orderData.map(order => order.id === order_id ? {...order, receipt: data.orders[0].receipt} : order))
+        });
+      } else {
+        this_.showSnackbar("Error: "+data.message, "error");
+      }
+    });
+  }
+
+  handleOrderStatus(order_id, status) {
+    fetch(apiBase+"/order/"+order_id, {
+      method: "put",
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+        'Authorization': this.state.apiKey,
+        'Tbapikey': this.state.apiKey
+      },
+      body: this.xwwwfurlenc({
+        status: status
+      })
+    })
+    .then(response => response.json())
+    .then(function(data) {
+      if (!data.error) {
+        this_.setState({
+          orderData: (this_.state.orderData.map(order => order.id === order_id ? {...order, status: status} : order))
+        }, function() {
+          this_.showSnackbar("The order has been updated.", "success");
+        });
+      } else {
+        this_.showSnackbar("Error: "+data.message, "error");
+      }
+    });
+  }
+
+  handleOrderPaid(order_id) {
+    fetch(apiBase+"/order/"+order_id, {
+      method: "put",
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+        'Authorization': this.state.apiKey,
+        'Tbapikey': this.state.apiKey
+      },
+      body: this.xwwwfurlenc({
+        paid: 1
+      })
+    })
+    .then(response => response.json())
+    .then(function(data) {
+      if (!data.error) {
+        this_.setState({
+          orderData: (this_.state.orderData.map(order => order.id === order_id ? {...order, paid: 1} : order))
+        }, function() {
+          this_.getOrderReceipt(order_id);
+          this_.showSnackbar("The order has been updated.", "success");
+        });
+      } else {
+        this_.showSnackbar("Error: "+data.message, "error");
+      }
+    });
+  }
+
   xwwwfurlenc(srcjson){
     if(typeof srcjson !== "object")
       if(typeof console !== "undefined"){
@@ -402,6 +499,10 @@ class App extends Component {
               handleLogout={this.handleLogout}
               handleSnackbar={this.showSnackbar}
               handleResetQR={this.handleResetQR}
+              handleGetOrders={this.getOrders}
+              handleGetOrderReceipt={this.getOrderReceipt}
+              handleOrderStatus={this.handleOrderStatus}
+              handleOrderPaid={this.handleOrderPaid}
               getQR={this.getQR}
             />
           </div>

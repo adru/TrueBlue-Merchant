@@ -476,7 +476,12 @@ class ClientArea extends Component {
         {actuallyShowThisArea === "ordersArea" && locationObj &&
           <OrdersArea
             data={data}
+            orderData={data.orderData}
             location={locationObj[0]}
+            handleGetOrders={this.props.handleGetOrders}
+            handleGetOrderReceipt={this.props.handleGetOrderReceipt}
+            handleOrderStatus={this.props.handleOrderStatus}
+            handleOrderPaid={this.props.handleOrderPaid}
           />
         }
         {actuallyShowThisArea === "userArea" && locationObj &&
