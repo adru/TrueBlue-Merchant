@@ -117,7 +117,7 @@ class ClientArea extends Component {
         localStorage.setItem('selectedLocation', this.props.data.clientData.locations[0].id);
         this.setState({
           selectedLocation: parseInt(this.props.data.clientData.locations[0].id)
-        })
+        }, function() { console.log(this_.state); })
       } else {
         this.setState({
           locationsOpen: true
@@ -257,6 +257,8 @@ class ClientArea extends Component {
     const alwaysShowMerchantPage = (data.merchantPageData && data.merchantPageData[0] && ((data.merchantPageData[0].icon).includes('left') || (data.merchantPageData[0].icon).includes('right'))) ? true : false;
     let actuallyShowThisArea = (data.userData) ? "userArea" : showArea;
     actuallyShowThisArea = (alwaysShowMerchantPage && !actuallyShowThisArea) ? "pointsQR" : actuallyShowThisArea;
+
+    console.log("locationObj", locationObj);
 
     return (
       <div>
