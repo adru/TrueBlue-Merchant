@@ -28,6 +28,9 @@ const styles = theme => ({
   tableWrapper: {
     overflowX: 'auto',
   },
+  modalOverflow: {
+    overflow: 'auto',
+  },
   paper: {
     position: 'absolute',
     width: 'auto',
@@ -50,9 +53,11 @@ const styles = theme => ({
     },
   },
   modal_actions: {
-    position: 'absolute',
-    top: theme.spacing.unit * 2,
-    left: '100%',
+    // position: 'absolute',
+    // top: theme.spacing.unit * 2,
+    // left: '100%',
+    display: 'inline-block',
+    marginLeft: 10,
     verticalAlign: 'top',
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing.unit * 2,
@@ -65,16 +70,29 @@ const styles = theme => ({
   input: {
     display: 'none',
   },
+  closeBtn: {
+    margin: 16,
+    padding: 10,
+    position: 'fixed',
+    top: 0,
+    right: 0,
+    color: '#FFFFFF',
+    zIndex: '9999',
+    '& .fa-lg': {
+      fontSize: 30,
+    }
+  },
 });
 
 function getModalStyle() {
-  const top = 50;
-  const left = 0;//50;
+  const top = 0;
+  const left = 0;
 
   return {
     top: `${top}%`,
-    // left: `${left}%`,
-    transform: `translate(-${left}%, -${top}%)`,
+    left: `${left}%`,
+    display: 'inline-block',
+    // transform: `translate(-${left}%, -${top}%)`,
   };
 }
 
@@ -280,8 +298,10 @@ class OrderTabs extends Component {
         <Modal
           open={modalOpen}
           onClose={this.handleClose}
+          className={classes.modalOverflow}
         >
           <div style={getModalStyle()} className={classes.paper}>
+            <div className={classes.closeBtn} onClick={this.handleClose}><i className="fal fa-times fa-lg"></i></div>
             {!modalReceipt && <div className={classes.modal_main}>Loading...</div>}
             {modalReceipt && <div className={classes.modal_main} dangerouslySetInnerHTML={{__html: modalReceipt}}></div>}
             {(modalStatus !== "complete") &&
