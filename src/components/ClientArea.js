@@ -53,7 +53,7 @@ const styles = theme => ({
   },
   fullscreen: {
     height: '100%',
-    height: 'calc(100vh - 60px) !important',
+    // height: 'calc(100vh - 60px) !important',
     textAlign: 'center'
   },
   focusVisible: {},
@@ -115,13 +115,13 @@ class ClientArea extends Component {
 
   componentWillMount() {
     if (localStorage.getItem('selectedLocation')) {
-      this.setState({ selectedLocation: parseInt(localStorage.getItem('selectedLocation')) }, function() { console.log(this_.state); });
+      this.setState({ selectedLocation: parseInt(localStorage.getItem('selectedLocation')) });
     } else if (this.props.data.clientData.locations) {
       if (this.props.data.clientData.locations.length === 1) {
         localStorage.setItem('selectedLocation', this.props.data.clientData.locations[0].id);
         this.setState({
           selectedLocation: parseInt(this.props.data.clientData.locations[0].id)
-        }, function() { console.log(this_.state); })
+        });
       } else {
         this.setState({
           locationsOpen: true
