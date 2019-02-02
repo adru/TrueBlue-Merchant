@@ -235,10 +235,11 @@ class ClientArea extends Component {
   confirmResetQR() {
     const { data } = this.props;
     const { selectedLocation } = this.state;
-    const locationObj = (selectedLocation !== "") ? data.clientData.locations.filter(function(location) { return location.id === selectedLocation; }) : null;
+    // const locationObj = (selectedLocation !== "") ? data.clientData.locations.filter(function(location) { return location.id === selectedLocation; }) : null;
+    const locationObj = (selectedLocation !== "") ? data.clientData.locations.filter(location => (location.id === parseInt(selectedLocation,0))[0]) : null;
 
-    if (selectedLocation && locationObj[0]) {
-      this.props.handleResetQR(locationObj[0].id);
+    if (selectedLocation && locationObj) {
+      this.props.handleResetQR(locationObj.id);
     } else {
       this.props.handleSnackbar("Error: A location is required.", "error");
     }
@@ -250,18 +251,14 @@ class ClientArea extends Component {
     const { classes, data, getQR } = this.props;
     const { locationsOpen, dialogOpen, resetQROpen, selectedLocation, showArea } = this.state;
     // const locationObj = (selectedLocation !== "") ? data.clientData.locations.filter(function(location) { return location.id === selectedLocation; }) : null;
-    const locationObj = (selectedLocation !== "") ? data.clientData.locations.filter(location => (location.id === parseInt(selectedLocation,0))) : null;
+    const locationObj = (selectedLocation !== "") ? data.clientData.locations.filter(location => (location.id === parseInt(selectedLocation,0))[0]) : null;
     const scanUserQR = (data.clientData && data.clientData.client_mode === "merchant");
-    const seeOrders = (locationObj && locationObj[0] && locationObj[0].cart_email);
+    const seeOrders = (locationObj && locationObj.cart_email);
     const scanRewardQR = (!scanUserQR && data.rewardData && data.rewardData.length);
     const merchantPage = (data.merchantPageData && data.merchantPageData[0]) ? true : false;
     const alwaysShowMerchantPage = (data.merchantPageData && data.merchantPageData[0] && ((data.merchantPageData[0].icon).includes('left') || (data.merchantPageData[0].icon).includes('right'))) ? true : false;
     let actuallyShowThisArea = (data.userData) ? "userArea" : showArea;
     actuallyShowThisArea = (alwaysShowMerchantPage && !actuallyShowThisArea) ? "pointsQR" : actuallyShowThisArea;
-
-    console.log("data", data.clientData.locations);
-    console.log("[0]", data.clientData.locations[0]);
-    console.log("locationObj", locationObj);
 
     return (
       <div>
@@ -302,7 +299,7 @@ class ClientArea extends Component {
           </DialogActions>
         </Dialog>
         {data.clientData.client_css && <style>{data.clientData.client_css}</style>}
-        {(!selectedLocation || locationObj.length === 0) && data.clientData.locations && data.clientData.locations.length > 1 &&
+        {!locationObj &&
           <AppBar position="static" color="primary" className="appBar">
             <Toolbar>
               <FormControl className={classes.formControl}>
@@ -334,7 +331,7 @@ class ClientArea extends Component {
             </Toolbar>
           </AppBar>
         }
-        {selectedLocation && locationObj[0] &&
+        {selectedLocation && locationObj &&
           <AppBar position="static" color="primary" className="appBar">
             <Toolbar>
               {data.clientData.locations && data.clientData.locations.length > 1 &&
@@ -345,7 +342,7 @@ class ClientArea extends Component {
                 </Tooltip>
               }
               <Typography variant="h5" color="inherit" className={classes.leftBar}>
-                <span dangerouslySetInnerHTML={{__html: locationObj[0].location_name}} />
+                <span dangerouslySetInnerHTML={{__html: locationObj.location_name}} />
               </Typography>
               {scanUserQR &&
                 <Tooltip title="Scan a User QR Code">
@@ -390,7 +387,7 @@ class ClientArea extends Component {
             </Toolbar>
           </AppBar>
         }
-        {selectedLocation && locationObj[0] && (actuallyShowThisArea === "" || alwaysShowMerchantPage) && !merchantPage &&
+        {locationObj && (actuallyShowThisArea === "" || alwaysShowMerchantPage) && !merchantPage &&
           <div className={classes.fullscreen}>
             <div className="verticallyCenter">
               {scanUserQR &&
@@ -467,14 +464,14 @@ class ClientArea extends Component {
         {actuallyShowThisArea === "pointsQR" && locationObj &&
           <PointsArea
             data={data}
-            location={locationObj[0]}
+            location={locationObj}
             getQR={getQR}
           />
         }
         {actuallyShowThisArea === "rewardsQR" && locationObj &&
           <RewardsArea
             data={data}
-            location={locationObj[0]}
+            location={locationObj}
             getQR={getQR}
           />
         }
@@ -482,7 +479,7 @@ class ClientArea extends Component {
           <OrdersArea
             data={data}
             orderData={data.orderData}
-            location={locationObj[0]}
+            location={locationObj}
             handleGetOrders={this.props.handleGetOrders}
             handleGetOrderReceipt={this.props.handleGetOrderReceipt}
             handleOrderStatus={this.props.handleOrderStatus}
@@ -493,7 +490,7 @@ class ClientArea extends Component {
           <UserArea
             data={data.userData}
             clientData={data.clientData}
-            token={locationObj[0].location_token}
+            token={locationObj.location_token}
             handleManualScan={this.props.handleManualScan}
             handleManualClaim={this.props.handleManualClaim}
             handleVIPadd={this.props.handleVIPadd}
