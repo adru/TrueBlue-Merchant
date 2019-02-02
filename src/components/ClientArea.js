@@ -255,7 +255,7 @@ class ClientArea extends Component {
     const { classes, data, getQR } = this.props;
     const { locationsOpen, dialogOpen, resetQROpen, selectedLocation, showArea } = this.state;
     // const locationObj = (selectedLocation !== "") ? data.clientData.locations.filter(function(location) { return location.id === selectedLocation; }) : null;
-    const locationObj = (selectedLocation !== "") ? data.clientData.locations.filter(location => (location.id === parseInt(selectedLocation,0))[0]) : null;
+    const locationObj = (selectedLocation !== "") ? data.clientData.locations.filter(location => (location.id === parseInt(selectedLocation,0)))[0] : null;
     const scanUserQR = (data.clientData && data.clientData.client_mode === "merchant");
     const seeOrders = (locationObj && locationObj.cart_email);
     const scanRewardQR = (!scanUserQR && data.rewardData && data.rewardData.length);
