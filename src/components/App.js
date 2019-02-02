@@ -478,7 +478,7 @@ class App extends Component {
     } else if (this.state.apiKey) {
       if (this.state.clientData) {
         return (
-          <div>
+          <div style={{height: '100%'}}>
             <Snackbar
               anchorOrigin={{
                 vertical: 'top',

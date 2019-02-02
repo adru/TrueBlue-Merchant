@@ -27,6 +27,9 @@ import OrdersArea from './OrdersArea';
 let this_;
 
 const styles = theme => ({
+  height100: {
+    height: '100%',
+  },
   formControl: {
     margin: theme.spacing.unit,
     flexGrow: 1,
@@ -49,6 +52,7 @@ const styles = theme => ({
     }
   },
   fullscreen: {
+    height: '100%',
     height: 'calc(100vh - 60px) !important',
     textAlign: 'center'
   },
@@ -261,7 +265,7 @@ class ClientArea extends Component {
     actuallyShowThisArea = (alwaysShowMerchantPage && !actuallyShowThisArea) ? "pointsQR" : actuallyShowThisArea;
 
     return (
-      <div>
+      <div className={classes.height100}>
         <Dialog
           maxWidth="xs"
           aria-labelledby="confirmation-dialog-title"
