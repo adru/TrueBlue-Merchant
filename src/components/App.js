@@ -144,7 +144,7 @@ class App extends Component {
     .then(response => response.json())
     .then(function(data) {
       if (!data.error) {
-        this_.setState({ clientData: data.client[0] });
+        this_.setState({ clientData: data.client[0] }, function() { console.log(this_.state); });
         this_.getRewards();
         this_.getMerchantPage();
       }
@@ -180,7 +180,7 @@ class App extends Component {
     .then(response => response.json())
     .then(function(data) {
       if (!data.error) {
-        this_.setState({ rewardData: data.rewards });
+        this_.setState({ rewardData: data.rewards }, function() { console.log(this_.state); });
       }
     });
   }
@@ -196,7 +196,7 @@ class App extends Component {
     .then(response => response.json())
     .then(function(data) {
       if (!data.error) {
-        this_.setState({ merchantPageData: data.pages });
+        this_.setState({ merchantPageData: data.pages }, function() { console.log(this_.state); });
       }
     });
   }
