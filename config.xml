@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="2010" id="guru.trueblue.fcmmerchant" version="2.0.1" versionCode="201" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget android-versionCode="2020" id="guru.trueblue.fcmmerchant" version="2.0.2" versionCode="202" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:gap="http://phonegap.com/ns/1.0">
     <gap:config-file parent="CFBundleShortVersionString" platform="ios">
-        <string>2.0.1</string>
+        <string>2.0.2</string>
     </gap:config-file>
     <name>TrueBlue Merchant</name>
     <description>
@@ -10,7 +10,7 @@
     <author email="dev@trueblue.guru" href="http://www.trueblue.guru">
       TrueBlue Mobile Software Inc
     </author>
-    <content src="index.html" />    
+    <content src="index.html" />
     <preference name="android-minSdkVersion" value="16" />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="orientation" value="default" />
