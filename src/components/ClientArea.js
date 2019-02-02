@@ -258,6 +258,7 @@ class ClientArea extends Component {
     let actuallyShowThisArea = (data.userData) ? "userArea" : showArea;
     actuallyShowThisArea = (alwaysShowMerchantPage && !actuallyShowThisArea) ? "pointsQR" : actuallyShowThisArea;
 
+    console.log(data.clientData.locations);
     console.log("locationObj", locationObj);
 
     return (
