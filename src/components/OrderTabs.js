@@ -25,6 +25,9 @@ const styles = theme => ({
   table: {
     minWidth: 700,
   },
+  tableWrapper: {
+    overflowX: 'auto',
+  },
   paper: {
     position: 'absolute',
     width: 'auto',
@@ -66,12 +69,12 @@ const styles = theme => ({
 
 function getModalStyle() {
   const top = 50;
-  const left = 50;
+  const left = 0;//50;
 
   return {
     top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
+    // left: `${left}%`,
+    transform: `translate(-${left}%, -${top}%)`,
   };
 }
 
@@ -242,36 +245,38 @@ class OrderTabs extends Component {
             <Tab label={label_4} />
           </Tabs>
         </AppBar>
-        <Table className={classes.table}>
-          <EnhancedTableHead
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={this.handleRequestSort}
-          />
-          <TableBody>
-            {stableSort(orders, getSorting(order, orderBy))
-              .map(row => {
-                return (row !== false &&
-                  <TableRow
-                    hover
-                    onClick={event => this.handleClick(event, row.id)}
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={row.id}
-                  >
-                    <TableCell component="th" scope="row">
-                      {row.name}
-                    </TableCell>
-                    <TableCell align="right"><Moment format="YYYY/MM/DD HH:mm">{row.created*1000}</Moment></TableCell>
-                    <TableCell align="right">{row.quantity}</TableCell>
-                    <TableCell align="right">{Number(row.total_value).toFixed(2)}</TableCell>
-                    <TableCell align="right">{(row.paid === 1) ? "Yes" : "No"}</TableCell>
-                  </TableRow>
-                )
-              })
-            }
-          </TableBody>
-        </Table>
+        <div className={classes.tableWrapper}>
+          <Table className={classes.table}>
+            <EnhancedTableHead
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={this.handleRequestSort}
+            />
+            <TableBody>
+              {stableSort(orders, getSorting(order, orderBy))
+                .map(row => {
+                  return (row !== false &&
+                    <TableRow
+                      hover
+                      onClick={event => this.handleClick(event, row.id)}
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={row.id}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row.name}
+                      </TableCell>
+                      <TableCell align="right"><Moment format="YYYY/MM/DD HH:mm">{row.created*1000}</Moment></TableCell>
+                      <TableCell align="right">{row.quantity}</TableCell>
+                      <TableCell align="right">{Number(row.total_value).toFixed(2)}</TableCell>
+                      <TableCell align="right">{(row.paid === 1) ? "Yes" : "No"}</TableCell>
+                    </TableRow>
+                  )
+                })
+              }
+            </TableBody>
+          </Table>
+        </div>
         <Modal
           open={modalOpen}
           onClose={this.handleClose}
