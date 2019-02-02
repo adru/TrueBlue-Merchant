@@ -111,7 +111,7 @@ class ClientArea extends Component {
 
   componentWillMount() {
     if (localStorage.getItem('selectedLocation')) {
-      this.setState({ selectedLocation: parseInt(localStorage.getItem('selectedLocation')) });
+      this.setState({ selectedLocation: parseInt(localStorage.getItem('selectedLocation')) }, function() { console.log(this_.state); });
     } else if (this.props.data.clientData.locations) {
       if (this.props.data.clientData.locations.length === 1) {
         localStorage.setItem('selectedLocation', this.props.data.clientData.locations[0].id);
@@ -250,7 +250,7 @@ class ClientArea extends Component {
     const { classes, data, getQR } = this.props;
     const { locationsOpen, dialogOpen, resetQROpen, selectedLocation, showArea } = this.state;
     // const locationObj = (selectedLocation !== "") ? data.clientData.locations.filter(function(location) { return location.id === selectedLocation; }) : null;
-    const locationObj = (selectedLocation !== "") ? data.clientData.locations.filter(location => (location.id === selectedLocation)) : null;
+    const locationObj = (selectedLocation !== "") ? data.clientData.locations.filter(location => (location.id === parseInt(selectedLocation,0))) : null;
     const scanUserQR = (data.clientData && data.clientData.client_mode === "merchant");
     const seeOrders = (locationObj && locationObj[0] && locationObj[0].cart_email);
     const scanRewardQR = (!scanUserQR && data.rewardData && data.rewardData.length);
@@ -259,7 +259,8 @@ class ClientArea extends Component {
     let actuallyShowThisArea = (data.userData) ? "userArea" : showArea;
     actuallyShowThisArea = (alwaysShowMerchantPage && !actuallyShowThisArea) ? "pointsQR" : actuallyShowThisArea;
 
-    console.log(data.clientData.locations);
+    console.log("data", data.clientData.locations);
+    console.log("[0]", data.clientData.locations[0]);
     console.log("locationObj", locationObj);
 
     return (
