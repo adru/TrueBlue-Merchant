@@ -12,6 +12,9 @@ import * as serviceWorker from './serviceWorker';
 
 const startApp = function() {
   ReactDOM.render(<App />, document.getElementById('root'));
+  if (navigator.splashscreen) {
+    navigator.splashscreen.hide();
+  }
   // serviceWorker.register();
 };
 
