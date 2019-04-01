@@ -181,7 +181,7 @@
     <platform name="ios">
       <preference name="phonegap-version" value="cli-7.1.0" />
     </platform>
-    <engine name="android" spec="~7.0.0" />
+    <engine name="android" spec="latest" />
     <platform name="android">
       <preference name="phonegap-version" value="cli-8.0.0" />
     </platform>
