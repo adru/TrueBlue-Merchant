@@ -160,7 +160,6 @@
             <string>This is not actually used, but bundled up in one permission.</string>
         </gap:config-file>
     </platform>
-    <plugin name="cordova-plugin-battery-status" source="npm" spec="~1.2.4" />
     <plugin name="cordova-plugin-camera" source="npm" spec="~2.4.1" />
     <plugin name="cordova-plugin-media-capture" source="npm" spec="~1.4.3" />
     <plugin name="cordova-plugin-device" source="npm" spec="~1.1.6" />
